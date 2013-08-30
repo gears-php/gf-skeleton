@@ -16,7 +16,7 @@ The main app principles are explained at below topics.
 Above is the default routing rule
 
 
-### 2. You project entry point file
+### 2. Your project entry point file
 ```php
 <?php # web/index.php
 
