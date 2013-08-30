@@ -1,0 +1,12 @@
+{
+    "repositories": [
+        {
+            "type": "git",
+            "url": "http://github.com/gears-php/framework"
+        }
+    ],
+    "require": {
+        "gears-php/framework": "dev-master",
+        "mustangostang/spyc": "dev-master"
+    }
+}
