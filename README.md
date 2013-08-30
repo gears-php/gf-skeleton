@@ -18,7 +18,7 @@ Above is the default routing rule
 
 ### 2. You project entry point file
 ```php
-<?php # index.php
+<?php # web/index.php
 
 use Gears\Framework\App\App;
 use Gears\Framework\App\Exception\ResourceNotFound;
