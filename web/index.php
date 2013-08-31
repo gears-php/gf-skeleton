@@ -1,14 +1,13 @@
 <?php # web/index.php
 
-use Gears\Framework\App\App;
 use Gears\Framework\App\Exception\ResourceNotFound;
 
-// framework bootstrapper file
-require_once '../vendor/gears-php/framework/bootstrap.php';
 require_once '../vendor/autoload.php';
 
 try {
-    (new App)->run();
+    /** @var Gears\Framework\App\App $app */
+    $app = require_once '../vendor/gears-php/framework/bootstrap.php';
+    $app->run();
 } catch (ResourceNotFound $e) {
-    throw $e;
+    throw $e; // 404 page for prod environment
 }
