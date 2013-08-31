@@ -10,11 +10,11 @@ use Gears\Framework\View\View;
  */
 class HelloController extends Controller
 {
-	public function welcomeAction()
-	{
+    public function welcomeAction()
+    {
         $view = new View([APP_PATH . 'views']);
         echo $view->load('welcome')
-                ->assign('username', 'John Doe')
-                ->render();
-	}
+            ->assign('username', 'John Doe')
+            ->render();
+    }
 }
