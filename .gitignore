@@ -2,4 +2,3 @@ app.yml
 cache
 vendor/*
 composer.phar
-composer.lock

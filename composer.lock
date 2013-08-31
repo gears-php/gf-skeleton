@@ -1,0 +1,98 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "f47873cada20b6e4c876a7b9c9e91c50",
+    "packages": [
+        {
+            "name": "gears-php/framework",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/gears-php/framework",
+                "reference": "2fc745de444a6b8a6c6392b1adb8d83258e706a7"
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "authors": [
+                {
+                    "name": "Denis Krasilnikov",
+                    "email": "deniskrasilnikov86@gmail.com"
+                }
+            ],
+            "description": "The Gears PHP Framework",
+            "keywords": [
+                "framework",
+                "mvc"
+            ],
+            "time": "2013-08-31 08:55:48"
+        },
+        {
+            "name": "mustangostang/spyc",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mustangostang/spyc.git",
+                "reference": "3c229bf49711fd278a79d0250a28d594c78c5e9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/3c229bf49711fd278a79d0250a28d594c78c5e9b",
+                "reference": "3c229bf49711fd278a79d0250a28d594c78c5e9b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.5.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Spyc.php"
+                ]
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT License"
+            ],
+            "authors": [
+                {
+                    "name": "mustangostang",
+                    "email": "vlad.andersen@gmail.com"
+                }
+            ],
+            "description": "A simple YAML loader/dumper class for PHP",
+            "homepage": "https://github.com/mustangostang/spyc/",
+            "keywords": [
+                "spyc",
+                "yaml",
+                "yml"
+            ],
+            "time": "2013-06-19 09:10:41"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "gears-php/framework": 20,
+        "mustangostang/spyc": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
