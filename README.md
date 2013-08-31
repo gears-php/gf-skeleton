@@ -2,9 +2,9 @@ gf-skeleton
 ===========
 
 This is a sample skeleton application built with Gears PHP framework. Use it as a basis for starting your own great projects.
-The main app principles are explained at below topics.
+The main app creation principles are explained at below topics.
 
-### 0. Recommended structure
+### 0. Project structure
 
 
 ### 1. The minimal configuration
