@@ -11,7 +11,7 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/gears-php/framework",
-                "reference": "93e2111a20582d72f536f3433d9a9c73407543e2"
+                "reference": "6c090f9f13e03fb482ba4e755885d4eb646ad05c"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -28,7 +28,7 @@
                 "framework",
                 "mvc"
             ],
-            "time": "2013-08-31 20:00:28"
+            "time": "2013-09-01 18:38:32"
         },
         {
             "name": "mustangostang/spyc",
