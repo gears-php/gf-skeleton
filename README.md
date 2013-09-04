@@ -6,10 +6,22 @@ The main app creation principles are explained at below topics.
 
 ### 0. Project structure
 
+```yaml
+app/
+	config/
+		app.yml
+		routes.yml
+	controllers/
+	models/
+	views/
+vendor/
+web/
+	index.php
+```
 
 ### 1. The minimal (mandatory) configuration
 
-Routes configuration file should contain a list of routing rules to be used for incoming request URI matching and further successful dispatching to an appropriate controller/action
+Routes configuration file should contain a list of routing rules to be used for incoming request URI matching and further successful dispatching to an appropriate controller/action. Below example describes a single "default" routing rule which is used in the current skeleton application:
 
 ```yaml
 # app/config/routes.yml
@@ -17,10 +29,7 @@ Routes configuration file should contain a list of routing rules to be used for 
   to: /
 ```
 
-Above is an example describing a single "default" routing rule
-
-
-### 2. Your project entry point file
+### 2. The project entry point file
 ```php
 <?php # web/index.php
 
