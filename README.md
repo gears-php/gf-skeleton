@@ -9,7 +9,7 @@ The main app creation principles are explained at below topics.
 
 ### 1. The minimal (mandatory) configuration
 
-Routes configuration file should contain a list of routing rules to be used for incoming request URI matching and further successfull dispatching to an appropriate controller/action
+Routes configuration file should contain a list of routing rules to be used for incoming request URI matching and further successful dispatching to an appropriate controller/action
 
 ```yaml
 # app/config/routes.yml
