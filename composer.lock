@@ -11,7 +11,7 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/gears-php/framework",
-                "reference": "6c090f9f13e03fb482ba4e755885d4eb646ad05c"
+                "reference": "942580702ce497b0f7e1ac8aaf2a8b5f57b7ac3f"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -28,7 +28,7 @@
                 "framework",
                 "mvc"
             ],
-            "time": "2013-09-01 18:38:32"
+            "time": "2013-09-07 20:43:10"
         },
         {
             "name": "mustangostang/spyc",
@@ -58,7 +58,7 @@
                     "Spyc.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT License"
             ],
