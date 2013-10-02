@@ -11,7 +11,7 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/gears-php/framework",
-                "reference": "942580702ce497b0f7e1ac8aaf2a8b5f57b7ac3f"
+                "reference": "d62640f842ef818733db4dd8e7cb9e4fd3b36911"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -28,7 +28,7 @@
                 "framework",
                 "mvc"
             ],
-            "time": "2013-09-07 20:43:10"
+            "time": "2013-10-02 18:24:47"
         },
         {
             "name": "mustangostang/spyc",
@@ -36,12 +36,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mustangostang/spyc.git",
-                "reference": "3c229bf49711fd278a79d0250a28d594c78c5e9b"
+                "reference": "5cbaa0af30b499a9a741a08b84970208bcf65c42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/3c229bf49711fd278a79d0250a28d594c78c5e9b",
-                "reference": "3c229bf49711fd278a79d0250a28d594c78c5e9b",
+                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/5cbaa0af30b499a9a741a08b84970208bcf65c42",
+                "reference": "5cbaa0af30b499a9a741a08b84970208bcf65c42",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +75,7 @@
                 "yaml",
                 "yml"
             ],
-            "time": "2013-06-19 09:10:41"
+            "time": "2013-09-15 19:44:35"
         }
     ],
     "packages-dev": [
