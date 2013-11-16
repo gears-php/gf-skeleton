@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f47873cada20b6e4c876a7b9c9e91c50",
+    "hash": "2bba87c868af51d2526d2cbb87e93814",
     "packages": [
         {
             "name": "gears-php/framework",
@@ -11,7 +11,7 @@
             "source": {
                 "type": "git",
                 "url": "http://github.com/gears-php/framework",
-                "reference": "d62640f842ef818733db4dd8e7cb9e4fd3b36911"
+                "reference": "5934b4ca8348bd2f36972d2b4240fb6f7cdc3473"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -28,7 +28,7 @@
                 "framework",
                 "mvc"
             ],
-            "time": "2013-10-02 18:24:47"
+            "time": "2013-11-16 11:22:47"
         },
         {
             "name": "mustangostang/spyc",
