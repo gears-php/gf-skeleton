@@ -14,7 +14,7 @@ app/
 	controllers/
 	models/
 	views/
-	Bootstrap.php
+	Bootstrap.php # optional
 vendor/
 web/
 	index.php
