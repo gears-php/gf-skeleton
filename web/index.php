@@ -7,7 +7,7 @@ require_once '../vendor/autoload.php';
 
 try {
     /** @var Bootstrap $bootstrap */
-    $bootstrap = require_once '../vendor/gears-php/framework/bootstrap.php';
+    $bootstrap = require_once '../vendor/gears-php/framework/src/bootstrap.php';
     $bootstrap->run();
 } catch (ResourceNotFound $e) {
     throw $e; // 404 page for prod environment
