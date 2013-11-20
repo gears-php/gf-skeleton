@@ -1,0 +1,77 @@
+###################
+# - Development - #
+###################
+version: "3.4"
+
+services:
+    php:
+        build:
+            context: ./services
+            target: php-dev
+            args:
+                BUILD_ENV: ${BUILD_ENV:-dev}
+                XDEBUG_ENABLED: ${XDEBUG_ENABLED-false}
+                IMAGE_FILES_FOLDER: php
+        dns:
+            - 8.8.8.8
+        depends_on:
+            - db
+#            - redis
+        volumes:
+            - ./services/php/app:/app:delegated
+            - ~/.ssh:/root/_ssh:ro
+        environment:
+            - PHP_IDE_CONFIG
+            - XDEBUG_CONFIG
+            - DB_HOST=db
+            - DB_NAME
+            - DB_USER
+            - DB_PASSWORD
+
+    nginx:
+        build:
+            context: ./services
+            target: nginx-dev
+            args:
+                BUILD_ENV: ${BUILD_ENV:-dev}
+                IMAGE_FILES_FOLDER: php
+        depends_on:
+            - php
+        ports:
+            - 80:80
+        volumes:
+            - ./services/php/app:/app:delegated
+        environment:
+            - NGINX_PORT
+            - RESOLVER_IP
+            - UPSTREAM_HOST
+            - UPSTREAM_PORT
+
+    db:
+        image: mysql:8
+        restart: always
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - db:/var/lib/mysql
+#
+#    redis:
+#        image: redis:latest
+#        restart: always
+#        volumes:
+#            - redis:/data
+#
+#    mailcatcher:
+#        image: schickling/mailcatcher
+#        ports:
+#            - 1080:1080
+#            - 1025:1025
+#
+volumes:
+    db:
+#    redis:

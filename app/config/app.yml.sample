@@ -1,6 +1,0 @@
-db:
-  driver: mysql
-  host: localhost
-  user: username
-  pass: password
-  dbname: dummydb

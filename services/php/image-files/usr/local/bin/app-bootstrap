@@ -1,0 +1,23 @@
+#!/bin/sh
+set -e
+
+# Creates missing folders
+echo "Creating missing folders..."
+#mkdir -p var/cache
+
+# Runs migrations, prepares prod or dev environment
+if [ $APP_ENV = "prod" ]; then
+    echo "Running migrations..."
+#    php bin/console doctrine:migration:migrate -n --allow-no-migration
+else
+    echo "Migrations skipped."
+
+    # Configures a private key
+    echo "Adding a private SSH key..."
+    cp ~/_ssh/id_rsa ~/.ssh/id_rsa
+    chmod 0600 ~/.ssh/id_rsa
+fi
+
+# Starts PHP FPM
+echo "Starting PHP FPM..."
+php-fpm

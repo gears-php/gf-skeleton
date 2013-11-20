@@ -1,3 +1,5 @@
-cache
-vendor/*
-composer.phar
+.git
+/services/*/app/
+.idea/
+.env
+*.pem
