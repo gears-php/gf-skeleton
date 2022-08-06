@@ -160,3 +160,46 @@ COPY $IMAGE_FILES_FOLDER/app /app
 # Runs Composer related scripts and optimizes the autoloader
 RUN composer install --no-dev --classmap-authoritative
 
+##########################################################
+### Stage: Interim builder image for Yarn dependencies ###
+##########################################################
+FROM node:16.13-alpine as builder-yarn
+
+# Sets the working directory
+WORKDIR /app
+
+# Installs Git
+RUN apk --update add git less openssh && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm /var/cache/apk/*
+
+# Build argument: Folder with image files
+ARG IMAGE_FILES_FOLDER
+
+# Copies frontend-related files
+COPY $IMAGE_FILES_FOLDER/app/package.json /app/
+COPY $IMAGE_FILES_FOLDER/app/yarn.lock /app/
+
+# Installs Yarn dependencies
+RUN yarn install
+
+##############################################################
+### Stage: Interim builder image for building the frontend ###
+##############################################################
+FROM builder-yarn as builder-frontend
+
+# Build argument: Folder with image files
+ARG IMAGE_FILES_FOLDER
+
+# Copies frontend source
+COPY $IMAGE_FILES_FOLDER/app/frontend /app/frontend
+
+# Copies vendor assets
+#COPY --from=builder-composer /app/vendor/sylius/ui-bundle/Resources/private \
+#    /app/vendor/sylius/ui-bundle/Resources/private
+
+# Build argument: Build environment (dev, prod, test)
+ARG BUILD_ENV
+
+# Warms up the cache
+RUN yarn run build:$BUILD_ENV

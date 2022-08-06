@@ -5,6 +5,7 @@ version: "3.4"
 
 services:
     php:
+        restart: on-failure
         build:
             context: ./services
             target: php-dev
@@ -16,7 +17,7 @@ services:
             - 8.8.8.8
         depends_on:
             - db
-#            - redis
+        #            - redis
         volumes:
             - ./services/php/app:/app:delegated
             - ~/.ssh:/root/_ssh:ro
@@ -29,6 +30,7 @@ services:
             - DB_PASSWORD
 
     nginx:
+        restart: on-failure
         build:
             context: ./services
             target: nginx-dev
@@ -49,7 +51,7 @@ services:
 
     db:
         image: mysql:8
-        restart: always
+        restart: on-failure
         ports:
             - 3306:3306
         environment:
