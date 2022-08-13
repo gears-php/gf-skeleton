@@ -6,7 +6,7 @@
 ARG BUILD_ENV=dev
 
 # Build argument: Image tag
-ARG IMAGE_TAG=8.0-fpm-buster
+ARG IMAGE_TAG=8.1-fpm-buster
 
 # Build argument: Folder with image files
 ARG IMAGE_FILES_FOLDER
@@ -66,7 +66,7 @@ ENV PATH=/app:/app/vendor/bin:/root/.composer/vendor/bin:$PATH
 
 # Installs Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
-ARG COMPOSER_VERSION=2.0.4
+ARG COMPOSER_VERSION=2.3.10
 RUN curl -sS https://getcomposer.org/installer | php -- \
         --filename=composer \
         --install-dir=/usr/local/bin \
@@ -113,7 +113,7 @@ RUN chmod +x /usr/local/bin/*
 ARG BUILD_ENV
 
 # Application environment for both Symfony 3.x and 4.x
-ENV APP_ENV=$BUILD_ENV
+ENV APP_ENV=$BUILD_ENV`
 
 # Build argument: Built-in variable for app version
 ARG APP_VERSION="1111111111111111111111111111111111111111 Thu Mar 20 00:00:00 2020 +0000"

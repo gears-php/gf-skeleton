@@ -15,8 +15,6 @@ services:
                 IMAGE_FILES_FOLDER: php
         dns:
             - 8.8.8.8
-        depends_on:
-            - db
         #            - redis
         volumes:
             - ./services/php/app:/app:delegated
@@ -24,6 +22,7 @@ services:
         environment:
             - PHP_IDE_CONFIG
             - XDEBUG_CONFIG
+            - APP_DEBUG
             - DB_HOST=db
             - DB_NAME
             - DB_USER
@@ -37,8 +36,6 @@ services:
             args:
                 BUILD_ENV: ${BUILD_ENV:-dev}
                 IMAGE_FILES_FOLDER: php
-        depends_on:
-            - php
         ports:
             - 80:80
         volumes:
