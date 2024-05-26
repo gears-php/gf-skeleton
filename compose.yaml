@@ -1,11 +1,9 @@
 ###################
 # - Development - #
 ###################
-version: "3.4"
-
 services:
     php:
-        restart: on-failure
+        restart: no
         build:
             context: ./services
             target: php-dev
@@ -37,7 +35,7 @@ services:
                 BUILD_ENV: ${BUILD_ENV:-dev}
                 IMAGE_FILES_FOLDER: php
         ports:
-            - 80:80
+            - "80:80"
         volumes:
             - ./services/php/app:/app:delegated
         environment:
@@ -50,7 +48,7 @@ services:
         image: mysql:8
         restart: on-failure
         ports:
-            - 3306:3306
+            - "3306:3306"
         environment:
             MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
             MYSQL_DATABASE: ${DB_NAME}
@@ -61,7 +59,6 @@ services:
 #
 #    redis:
 #        image: redis:latest
-#        restart: always
 #        volumes:
 #            - redis:/data
 #
