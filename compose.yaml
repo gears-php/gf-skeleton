@@ -1,7 +1,7 @@
 ###################
 # - Development - #
 ###################
-version: "3.4"
+version: "3.7"
 
 services:
     php:
@@ -37,7 +37,7 @@ services:
                 BUILD_ENV: ${BUILD_ENV:-dev}
                 IMAGE_FILES_FOLDER: php
         ports:
-            - 80:80
+            - "80:80"
         volumes:
             - ./services/php/app:/app:delegated
         environment:
@@ -50,7 +50,7 @@ services:
         image: mysql:8
         restart: on-failure
         ports:
-            - 3306:3306
+            - "3306:3306"
         environment:
             MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
             MYSQL_DATABASE: ${DB_NAME}
