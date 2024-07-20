@@ -20,6 +20,7 @@ services:
         environment:
             - PHP_IDE_CONFIG
             - XDEBUG_CONFIG
+            - XDEBUG_MODE=develop
             - APP_DEBUG
             - DB_HOST=db
             - DB_NAME
@@ -45,7 +46,7 @@ services:
             - UPSTREAM_PORT
 
     db:
-        image: mysql:8
+        image: mysql:8.3
         restart: on-failure
         ports:
             - "3306:3306"
