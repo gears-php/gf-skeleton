@@ -1,19 +1,13 @@
-###################
-# - Development - #
-###################
+# development setup
 services:
     php:
-        restart: no
+        restart: unless-stopped
         build:
             context: ./services
             target: php-dev
             args:
-                BUILD_ENV: ${BUILD_ENV:-dev}
+                APP_ENV: ${APP_ENV:-dev}
                 XDEBUG_ENABLED: ${XDEBUG_ENABLED-false}
-                IMAGE_FILES_FOLDER: php
-        dns:
-            - 8.8.8.8
-        #            - redis
         volumes:
             - ./services/php/app:/app:delegated
             - ~/.ssh:/root/_ssh:ro
@@ -21,6 +15,7 @@ services:
             - PHP_IDE_CONFIG
             - XDEBUG_CONFIG
             - XDEBUG_MODE=develop
+            - APP_ENV
             - APP_DEBUG
             - DB_HOST=db
             - DB_NAME
@@ -28,13 +23,12 @@ services:
             - DB_PASSWORD
 
     nginx:
-        restart: on-failure
+        restart: unless-stopped
         build:
             context: ./services
             target: nginx-dev
             args:
-                BUILD_ENV: ${BUILD_ENV:-dev}
-                IMAGE_FILES_FOLDER: php
+                BUILD_ENV: ${APP_ENV:-dev}
         ports:
             - "80:80"
         volumes:
@@ -45,18 +39,18 @@ services:
             - UPSTREAM_HOST
             - UPSTREAM_PORT
 
-    db:
-        image: mysql:8.3
-        restart: on-failure
-        ports:
-            - "3306:3306"
-        environment:
-            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${DB_NAME}
-            MYSQL_USER: ${DB_USER}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
-        volumes:
-            - db:/var/lib/mysql
+#    db:
+#        image: mysql:8.3
+#        restart: on-failure
+#        ports:
+#            - "3306:3306"
+#        environment:
+#            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+#            MYSQL_DATABASE: ${DB_NAME}
+#            MYSQL_USER: ${DB_USER}
+#            MYSQL_PASSWORD: ${DB_PASSWORD}
+#        volumes:
+#            - db:/var/lib/mysql
 #
 #    redis:
 #        image: redis:latest

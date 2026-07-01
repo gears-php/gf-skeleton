@@ -14,11 +14,14 @@ server {
         set $upstream ${UPSTREAM_HOST}:${UPSTREAM_PORT};
         fastcgi_pass $upstream;
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
-        fastcgi_pass_request_headers on;
         include fastcgi_params;
-        fastcgi_read_timeout 600;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         fastcgi_param DOCUMENT_ROOT $realpath_root;
         fastcgi_param HTTPS $https if_not_empty;
+        internal;
+    }
+
+    location ~ \.php$ {
+        return 404;
     }
 }

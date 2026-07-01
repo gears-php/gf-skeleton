@@ -2,33 +2,27 @@
 ### The base PHP and Nginx images for development and production ###
 ####################################################################
 
-# Build argument: Build environment (dev, prod, test)
-ARG BUILD_ENV=dev
+# Build argument: App environment (dev, prod, test)
+ARG APP_ENV=dev
 
 # Build argument: Image tag
 ARG IMAGE_TAG=8.3-fpm
-
-# Build argument: Folder with image files
-ARG IMAGE_FILES_FOLDER
 
 ###############################
 ### Stage: Base Nginx image ###
 ###############################
 FROM nginx:1.26 as nginx-dev
 
-# Installs curl
-# RUN apt-get update && apt-get install curl -y
+# Copy scripts and configs into image filesystem
+COPY nginx/ /
 
-# Copies scripts and configs
-COPY nginx/image-files/ /
-
-# Sets permissions for scripts
+# Set permissions for scripts
 RUN chmod +x /docker-entrypoint.sh
 
-# Changes entrypoint
+# Change entrypoint
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-# Starts Nginx
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
 
 
@@ -56,12 +50,12 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
     bcmath \
     intl \
 #    mcrypt \
-    pdo_mysql \
+#    pdo_mysql \
     gd \
     zip \
     opcache
 
-# Sets PATHs
+# Set PATHs
 ENV PATH=/app:/app/vendor/bin:/root/.composer/vendor/bin:$PATH
 
 # Installs Composer
@@ -73,16 +67,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
         --version=${COMPOSER_VERSION} \
     && composer clear-cache
 
-# Prepares for loading private Composer dependencies
-RUN mkdir -p ~/.ssh && ssh-keyscan -H gitlab.com >> ~/.ssh/known_hosts
-
-# Expands the rights for www-data user
-RUN usermod -u 1000 www-data
-
-# Sets the working directory
-WORKDIR /app
-
-# Sets up XDebug
+# Set up XDebug
 ARG XDEBUG_ENABLED=false
 RUN if $XDEBUG_ENABLED; then pecl install xdebug \
     && docker-php-ext-enable xdebug \
@@ -90,33 +75,22 @@ RUN if $XDEBUG_ENABLED; then pecl install xdebug \
     && echo "xdebug.max_nesting_level=1000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     ; fi
 
-# Copies base scripts and configs
-COPY base/image-files/ /
+# Copy custom scripts and configs
+COPY php/custom.ini /usr/local/etc/php/conf.d
 
-# Build argument: Folder with image files
-ARG IMAGE_FILES_FOLDER
+ARG APP_ENV
 
-# Copies custom scripts and configs
-COPY $IMAGE_FILES_FOLDER/image-files/ /
+# Display PHP errors depending on environment
+RUN if [ "$APP_ENV" = "dev" ]; then sed -i 's/display_errors = Off/display_errors = On/g' /usr/local/etc/php/conf.d/custom.ini; fi
 
-# Build argument: Debug mode — enables debug info display (it should be disabled on production!)
-ARG DEBUG_MODE=1
+# Expand the rights for www-data user
+RUN usermod -u 1000 www-data
 
-# Enables or disables PHP error reporting depending on `DEBUG_MODE`
-RUN if [ "$DEBUG_MODE" = 0 ]; then sed -i '/display_errors = On/cdisplay_errors = Off' /usr/local/etc/php/conf.d/base-custom.ini; fi
-
-# Sets permissions for scripts
-RUN chmod +x /build-scripts/build
-RUN chmod +x /usr/local/bin/*
-
-# Build argument: Build environment (dev, prod, test)
-ARG BUILD_ENV
-
-# Application environment for both Symfony 3.x and 4.x
-ENV APP_ENV=$BUILD_ENV
+# Set the working directory
+WORKDIR /app
 
 # Build argument: Built-in variable for app version
-ARG APP_VERSION="1111111111111111111111111111111111111111 Thu Mar 20 00:00:00 2020 +0000"
+ARG APP_VERSION="1111 Thu Mar 20 00:00:00 2020 +0000"
 # Build argument: Built-in variable for active git branch name
 ARG BRANCH=no-branch
 
@@ -124,12 +98,6 @@ ARG BRANCH=no-branch
 #ENV AE_APP_VERSION=$APP_VERSION
 # Active git branch name (built in the image)
 #ENV AE_ACTIVE_BRANCH=$BRANCH
-
-# Builds the source code for production environment (optional)
-RUN /build-scripts/build
-
-# Starts the app
-CMD ["app-bootstrap"]
 
 ################################################################################
 ### Stage: Interim builder image for Composer dependencies and cache warm-up ###
@@ -142,11 +110,8 @@ COPY base/ssh/id_rsa /root/.ssh/id_rsa
 # Prepares SSH key
 RUN chmod 0600 /root/.ssh/id_rsa
 
-# Build argument: Folder with image files
-ARG IMAGE_FILES_FOLDER
-
 # Copies Composer files
-COPY $IMAGE_FILES_FOLDER/app/composer.* /app/
+COPY php/app/composer.* /app/
 
 # Loads vendors and prepares binaries (this should be cached if Composer files have not been changed)
 RUN composer install --no-dev --no-scripts
@@ -155,7 +120,7 @@ RUN composer install --no-dev --no-scripts
 RUN mkdir -p var/cache
 
 # Copies all files
-COPY $IMAGE_FILES_FOLDER/app /app
+COPY php/app /app
 
 # Runs Composer related scripts and optimizes the autoloader
 RUN composer install --no-dev --classmap-authoritative
@@ -173,12 +138,9 @@ RUN apk --update add git less openssh && \
     rm -rf /var/lib/apt/lists/* && \
     rm /var/cache/apk/*
 
-# Build argument: Folder with image files
-ARG IMAGE_FILES_FOLDER
-
 # Copies frontend-related files
-COPY $IMAGE_FILES_FOLDER/app/package.json /app/
-COPY $IMAGE_FILES_FOLDER/app/yarn.lock /app/
+COPY php/app/package.json /app/
+COPY php/app/yarn.lock /app/
 
 # Installs Yarn dependencies
 RUN yarn install
@@ -188,11 +150,8 @@ RUN yarn install
 ##############################################################
 FROM builder-yarn as builder-frontend
 
-# Build argument: Folder with image files
-ARG IMAGE_FILES_FOLDER
-
 # Copies frontend source
-COPY $IMAGE_FILES_FOLDER/app/frontend /app/frontend
+COPY php/app/frontend /app/frontend
 
 # Copies vendor assets
 #COPY --from=builder-composer /app/vendor/sylius/ui-bundle/Resources/private \
