@@ -2,10 +2,7 @@
 ### The base PHP and Nginx images for development and production ###
 ####################################################################
 
-# Build argument: App environment (dev, prod, test)
-ARG APP_ENV=dev
-
-# Build argument: Image tag
+ARG APP_DEBUG=false
 ARG IMAGE_TAG=8.3-fpm
 
 ###############################
@@ -31,7 +28,7 @@ CMD ["nginx", "-g", "daemon off;"]
 #############################
 FROM php:$IMAGE_TAG as php-dev
 
-# Installs libraries
+# Install libraries
 RUN apt-get update && apt-get install -y \
     git \
     zip \
@@ -50,7 +47,7 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
     bcmath \
     intl \
 #    mcrypt \
-#    pdo_mysql \
+    pdo_mysql \
     gd \
     zip \
     opcache
@@ -67,7 +64,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
         --version=${COMPOSER_VERSION} \
     && composer clear-cache
 
-# Set up XDebug
+# Setup XDebug
 ARG XDEBUG_ENABLED=false
 RUN if $XDEBUG_ENABLED; then pecl install xdebug \
     && docker-php-ext-enable xdebug \
@@ -78,10 +75,10 @@ RUN if $XDEBUG_ENABLED; then pecl install xdebug \
 # Copy custom scripts and configs
 COPY php/custom.ini /usr/local/etc/php/conf.d
 
-ARG APP_ENV
+ARG APP_DEBUG
 
-# Display PHP errors depending on environment
-RUN if [ "$APP_ENV" = "dev" ]; then sed -i 's/display_errors = Off/display_errors = On/g' /usr/local/etc/php/conf.d/custom.ini; fi
+# Display PHP errors whe debugging is enabled
+RUN if $APP_DEBUG; then sed -i 's/display_errors = Off/display_errors = On/g' /usr/local/etc/php/conf.d/custom.ini; fi
 
 # Expand the rights for www-data user
 RUN usermod -u 1000 www-data
@@ -104,11 +101,9 @@ ARG BRANCH=no-branch
 ################################################################################
 FROM php-dev as builder-composer
 
-# Copies SSH key
-COPY base/ssh/id_rsa /root/.ssh/id_rsa
-
 # Prepares SSH key
-RUN chmod 0600 /root/.ssh/id_rsa
+#COPY base/ssh/id_rsa /root/.ssh/id_rsa
+#RUN chmod 0600 /root/.ssh/id_rsa
 
 # Copies Composer files
 COPY php/app/composer.* /app/
@@ -158,7 +153,7 @@ COPY php/app/frontend /app/frontend
 #    /app/vendor/sylius/ui-bundle/Resources/private
 
 # Build argument: Build environment (dev, prod, test)
-ARG BUILD_ENV
+ARG BUILD_ENV=dev
 
 # Warms up the cache
 RUN yarn run build:$BUILD_ENV

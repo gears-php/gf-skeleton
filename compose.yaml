@@ -6,7 +6,7 @@ services:
             context: ./services
             target: php-dev
             args:
-                APP_ENV: ${APP_ENV:-dev}
+                APP_DEBUG: ${APP_DEBUG:-false}
                 XDEBUG_ENABLED: ${XDEBUG_ENABLED-false}
         volumes:
             - ./services/php/app:/app:delegated
@@ -15,7 +15,6 @@ services:
             - PHP_IDE_CONFIG
             - XDEBUG_CONFIG
             - XDEBUG_MODE=develop
-            - APP_ENV
             - APP_DEBUG
             - DB_HOST=db
             - DB_NAME
@@ -27,8 +26,6 @@ services:
         build:
             context: ./services
             target: nginx-dev
-            args:
-                BUILD_ENV: ${APP_ENV:-dev}
         ports:
             - "80:80"
         volumes:
@@ -39,18 +36,18 @@ services:
             - UPSTREAM_HOST
             - UPSTREAM_PORT
 
-#    db:
-#        image: mysql:8.3
-#        restart: on-failure
-#        ports:
-#            - "3306:3306"
-#        environment:
-#            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-#            MYSQL_DATABASE: ${DB_NAME}
-#            MYSQL_USER: ${DB_USER}
-#            MYSQL_PASSWORD: ${DB_PASSWORD}
-#        volumes:
-#            - db:/var/lib/mysql
+    db:
+        image: mysql:8.3
+        restart: on-failure
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - db:/var/lib/mysql
 #
 #    redis:
 #        image: redis:latest
